@@ -6,15 +6,11 @@ fun main(args: Array<String>) {
 
 fun tokenize_chunk(template: String) : Pair<String, Token> {
     Regex("""\A\{\{\s*([\w-.]+)\s*}}""").find(template)?.let { matchResult ->
-        val value = matchResult.value
-        val token: String = matchResult.groupValues[1]
-        return Pair(value, Symbol(token))
+        return Pair(matchResult.value, Symbol(matchResult.groupValues[1]))
     }
 
     Regex("""\A\{\{/\s*(\w+)\s*}}""").find(template)?.let { matchResult ->
-        val value = matchResult.value
-        val token: String = matchResult.groupValues[1]
-        return Pair(value, IterInit(token))
+        return Pair(matchResult.value, IterInit(matchResult.groupValues[1]))
     }
 
     return Pair("", Unknown(""))
